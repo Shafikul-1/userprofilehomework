@@ -1,14 +1,12 @@
 <script setup>
-import { users } from '../../stores/Users';
-const userDeails = users().userDeails
-const userDetailsSumit = users().userDetailsSumit
-const handleFileChange = users().handleFileChange
+// import { reactive } from 'vue'
+import { userDeails, userDetailsSumit, handleFileChange } from "../../stores/Users";
 
 </script>
 
 <template>
     <section class="max-w-4xl p-6 mx-auto bg-indigo-600 rounded-md shadow-md dark:bg-gray-800 mt-10">
-        <h1 class=" font-bold text-white capitalize dark:text-white mb-[32px] text-[40px] text-center">
+        <h1 class="font-bold text-white capitalize dark:text-white mb-[32px] text-[40px] text-center">
             User Account Sign Up
         </h1>
         <form @submit.prevent="userDetailsSumit">
@@ -36,13 +34,15 @@ const handleFileChange = users().handleFileChange
                 </div>
 
                 <div>
-                    <label class="text-white dark:text-gray-200" for="passwordConfirmation"> Confirmation Password</label>
+                    <label class="text-white dark:text-gray-200" for="passwordConfirmation">
+                        Confirmation Password</label>
                     <input id="passwordConfirmation" type="password" v-model="userDeails.confirmPass"
                         class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" />
                 </div>
                 <div>
                     <label class="text-white dark:text-gray-200" for="passwordConfirmation">Gender</label>
-                    <select v-model="userDeails.gender" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
+                    <select v-model="userDeails.gender"
+                        class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
                         <option value="" selected disabled>Select</option>
                         <option>Male</option>
                         <option>Female</option>
@@ -61,7 +61,7 @@ const handleFileChange = users().handleFileChange
                 </div>
                 <div>
                     <div class="">
-                        <img class="w-[13rem] h-[13rem] rounded-full" :src="userDeails.image" alt="Image Preview">
+                        <img class="w-[13rem] h-[13rem] rounded-full" :src="userDeails.image" alt="Image Preview" />
                     </div>
                 </div>
                 <div>
@@ -78,7 +78,8 @@ const handleFileChange = users().handleFileChange
                                 <label for="file-upload"
                                     class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                                     <span class="">Upload a file</span>
-                                    <input type="file" accept=".jpg, .jpeg, .png, .webp, .svg" @change="handleFileChange" class="sr-only" id="file-upload" name="file-upload">
+                                    <input type="file" accept=".jpg, .jpeg, .png, .webp, .svg" @change="handleFileChange"
+                                        class="sr-only" id="file-upload" name="file-upload" />
                                 </label>
                                 <p class="pl-1 text-white">or drag and drop</p>
                             </div>

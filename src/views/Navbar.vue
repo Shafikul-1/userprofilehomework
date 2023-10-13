@@ -1,9 +1,7 @@
 <script setup>
 import { ref, reactive } from 'vue'
-import { users } from '../stores/Users';
-const isAuth = users().isAuth
-const image = users().userDeails
-const signOut = users().signOut
+import { users, getFullUserInfo } from '../stores/Users';
+
 
 const showUserNav = ref(false)
 const toggleShow = ref(false)
@@ -16,8 +14,8 @@ const toggleShow = ref(false)
 <nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 ">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <RouterLink to="/" class="flex items-center">
-        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="Flowbite Logo" />
-        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Flowbite</span>
+        <img :src="getFullUserInfo.image" class="h-8 mr-3" alt="Flowbite Logo" />
+        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">( {{ users.isAuth }} )</span>
     </RouterLink>
     <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
@@ -30,6 +28,7 @@ const toggleShow = ref(false)
         <li>
           <RouterLink to="/" class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent" aria-current="page">Home</RouterLink>
         </li>
+        
         <li class="relative">
             <button @click="toggleShow = !toggleShow" id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar" class="flex items-center justify-between w-full py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">
                 Dropdown 
@@ -62,18 +61,19 @@ const toggleShow = ref(false)
           <RouterLink to="/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Other 2</RouterLink>
         </li>
         <li>
-          <RouterLink to="/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Other 2</RouterLink>
+          <RouterLink to="/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Other 3</RouterLink>
         </li>
         <li>
-          <RouterLink to="/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Other 2</RouterLink>
+          <RouterLink to="/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Other 4</RouterLink>
         </li>
-        <li>
-          <RouterLink to="/user" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">User</RouterLink>
+        <!-- User login will be shown first -->
+        <li v-if="!users.isAuth">
+          <RouterLink to="/login" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Sign In</RouterLink>
         </li>
 
         <!-- User Login Then Show Profile -->
-        <li v-if="isAuth" class="relative">
-          <img :src="image.image" @click="showUserNav = !showUserNav" alt="" class="w-[30px] h-[30px] rounded-full cursor-pointer">
+        <li v-else class="relative">
+          <img :src="getFullUserInfo.image" @click="showUserNav = !showUserNav" alt="" class="w-[30px] h-[30px] rounded-full cursor-pointer">
           <div id="dropdownNavbar" :class="showUserNav ? '' : 'hidden'" class="absolute right-[-12px] top-[45px] z-10  font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
                   <li>
@@ -84,15 +84,9 @@ const toggleShow = ref(false)
                   </li>
                 </ul>
                 <div class="py-1">
-                  <button @click="signOut" class="block w-full px-4 text-start py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Sign out</button>
+                  <button class="block w-full px-4 text-start py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Sign out</button>
                 </div>
             </div>
-        </li>
-
-        <!-- User login will be shown first -->
-       
-        <li v-else>
-          <RouterLink to="/login" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</RouterLink>
         </li>
       </ul>
     </div>

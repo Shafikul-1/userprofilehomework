@@ -1,13 +1,9 @@
 <script setup>
-import { RouterView } from "vue-router";
 import { ref, reactive } from "vue";
-import router from '../router/index'
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
+import { getFullUserInfo } from '../stores/Users'
 
-//import  from '.'
-const collectItem = localStorage.getItem("userDetails");
-const userDeails = JSON.parse(collectItem);
+
+const userDeails = getFullUserInfo
 const currentData = new Date();
 
 // ==============
@@ -30,16 +26,14 @@ if (parts.length === 3) {
     userAge.fullDate = formattedDate;
     userAge.year = year;
 } else {
-    toast.error("Invalid Your Age");
+    alert('Plese Vaild Age')
 }
 
 // ===============
 function ageDeceted() {
     if (( currentData.getFullYear() - userAge.year ) < 14) {
-        toast.error('not eligible for voting')
         return 'not eligible for voting'
     } else {
-        toast.done('not eligible for voting')
         return 'eligible for voting'
     }
 }

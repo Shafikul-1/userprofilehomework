@@ -1,18 +1,9 @@
 <script setup>
-import { ref, reactive } from 'vue';
 import router from '../router';
-import { toast } from "vue3-toastify";
-import "vue3-toastify/dist/index.css";
+import {  getFullUserInfo } from '../stores/Users'
 
-const collectDetails = localStorage.getItem('userDetails')
-const details = JSON.parse(collectDetails)
-const userDeails = details
-
-
-
+const userDeails = getFullUserInfo
 const editSubmit = () => {
-    toast.success('Your Update is successful')
-    console.log('ok test')
     router.push('/user')
 }
 </script>
@@ -94,7 +85,6 @@ const editSubmit = () => {
   .UserEdintPageHeading{
     text-transform: capitalize;
     text-align: center;
-    
     padding: 0;
     color: white;
     font-size: 2.2rem;

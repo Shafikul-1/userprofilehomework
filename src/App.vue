@@ -5,7 +5,7 @@ import {RouterView} from 'vue-router'
 import Navbar from './views/Navbar.vue';
 </script>
 
-<template>
+<template> 
   <Navbar/>
   <router-view></router-view>
 </template>

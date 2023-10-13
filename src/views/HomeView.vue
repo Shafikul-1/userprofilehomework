@@ -6,9 +6,8 @@ import { users } from '../stores/Users';
 
 <template>
     <div class="">
-         <h1>This is a Home Page</h1>
+         <h1 class="text-4xl font-bold text-center mt-20">This is a Home Page</h1>
     </div>
-    <button @click="users.signOut" class="font-bold bg-red-500 text-2xl">Sign Out</button>
 </template>
 
 <style scoped>

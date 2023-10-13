@@ -14,8 +14,12 @@ const toggleShow = ref(false)
 <nav class="bg-white border-gray-200 dark:bg-gray-900 dark:border-gray-700 ">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <RouterLink to="/" class="flex items-center">
-        <img :src="getFullUserInfo.image" class="h-8 mr-3" alt="Flowbite Logo" />
-        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">( {{ users.isAuth }} )</span>
+        <img v-if="users.isAuth" :src="getFullUserInfo.image" class="h-8 mr-3" alt="Flowbite Logo" />
+        <img v-else src="../assets/avater.png" class="h-8 mr-3" alt="Flowbite Logo" />
+        <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"> 
+          <span  v-if="users.isAuth">( {{ getFullUserInfo.fullName }} )</span> 
+          <span v-else>( Full Name )</span>
+        </span>
     </RouterLink>
     <button data-collapse-toggle="navbar-dropdown" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
@@ -84,7 +88,7 @@ const toggleShow = ref(false)
                   </li>
                 </ul>
                 <div class="py-1">
-                  <button class="block w-full px-4 text-start py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Sign out</button>
+                  <button  @click="users.signOut" class="block w-full px-4 text-start py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Sign out</button>
                 </div>
             </div>
         </li>

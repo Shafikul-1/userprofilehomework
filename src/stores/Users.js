@@ -5,15 +5,13 @@ import { toast } from 'vue3-toastify';
 import "vue3-toastify/dist/index.css";
 
 // Router Change Condition
+const loginToken = localStorage.getItem('loginToken')
+console.log(loginToken);
 const users = reactive({
-    isAuth : false,
-    signIn(){
-        this.isAuth = true
-    },
+    isAuth : loginToken,
     signOut(){
-        this.isAuth = false
-    },
-    
+        this.isAuth = localStorage.setItem('loginToken', false)
+    }
 })
 // End ====================
 
@@ -55,10 +53,9 @@ const handleFileChange = (event) => {
     }
 };
 
-watch(userDeails, function userDetailsSumit(){
-    localStorage.setItem('userDetails2', JSON.stringify(userDeails))
-}, {immediate: true})
-
+// watch(userDeails, function userDetailsSumit(){
+//     localStorage.setItem('userDetails2', JSON.stringify(userDeails))
+// }, {immediate: true})
 const userDetailsSumit = ()=>{
     localStorage.setItem('userDetails2', JSON.stringify(userDeails))
     router.push('/login')
@@ -73,23 +70,46 @@ const loginInfo = reactive({
 })
 
 const loginFRSubmit = ()=>{
-    if ( getFullUserInfo.userName !== loginInfo.name) {
-        toast.error(`Did Not Match Login Name => ${loginInfo.name} ||  LocalStore Name => ${getFullUserInfo.userName} `)
-    } else if ( getFullUserInfo.email !== loginInfo.email) {
-        toast.error(`Did Not Match Login Email => ${loginInfo.email} ||  LocalStore Email => ${getFullUserInfo.email}`)
-    } else if ( getFullUserInfo.password !== loginInfo.pass) {
-         toast.error(`Did Not Match Login Password => ${loginInfo.pass} ||  LocalStore Password => ${getFullUserInfo.password}`)
-    } else {
-        users.isAuth = true
-        
-        toast.success('Match Your Provide information => Successfully Done')
-        // setInterval(() => {
-        //     router.push('/user')
-        // }, 2000);
-    }    
+    if((getFullUserInfo == null)|| (getFullUserInfo == undefined)){
+        toast.error('Please registar your account')
+    } else{
+        if ((getFullUserInfo.userName == "") || (getFullUserInfo.email == "") || (getFullUserInfo.password == "")) {
+            toast.error('Please registar your account')
+        } else {
+            if ( getFullUserInfo.userName !== loginInfo.name) {
+                toast.error(`Did Not Match Login Name => ${loginInfo.name} ||  LocalStore Name => ${getFullUserInfo.userName} `)
+            } else if ( getFullUserInfo.email !== loginInfo.email) {
+                toast.error(`Did Not Match Login Email => ${loginInfo.email} ||  LocalStore Email => ${getFullUserInfo.email}`)
+            } else if ( getFullUserInfo.password !== loginInfo.pass) {
+                 toast.error(`Did Not Match Login Password => ${loginInfo.pass} ||  LocalStore Password => ${getFullUserInfo.password}`)
+            } else {
+                localStorage.setItem('loginToken', true)
+                toast.success('Match Your Provide information => Successfully Done')
+                router.push('/user')
+            }  
+        }
+    }
 }
 // End Login Details ===========
 
+// Update Login Details
 
+// const userDeailsUpdate = reactive({
+//     fullName: getFullUserInfo.fullName,
+//     email: getFullUserInfo.email,
+//     password: getFullUserInfo.password,
+//     confirmPass: getFullUserInfo.confirmPass,
+//     userName: getFullUserInfo.userName,
+//     gender: getFullUserInfo.gender,
+//     userPhonenumber: getFullUserInfo.userPhonenumber,
+//     dateOfBath: getFullUserInfo.dateOfBath,
+//     image: getFullUserInfo.image,
+// })
 
-export{ getFullUserInfo, users, userDeails, userDetailsSumit, handleFileChange, loginInfo, loginFRSubmit }
+// const editSubmit = () => {
+//     localStorage.setItem('userDetails2', JSON.stringify(userDeails) )
+//     console.log(userDeails)
+//     router.push('/user')
+// }
+
+export{ getFullUserInfo, users, userDeails, userDetailsSumit, handleFileChange, loginInfo, loginFRSubmit,  }
